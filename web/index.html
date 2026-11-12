@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SplitWise</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <span class="navbar-logo">💰</span>
+      <span class="navbar-title">SplitWise</span>
+    </div>
+    <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">☰</button>
+  </nav>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <ul class="nav-list">
+        <li><a href="#" class="nav-link active" data-view="dashboard">📊 Dashboard</a></li>
+        <li><a href="#" class="nav-link" data-view="users">👥 Users</a></li>
+        <li><a href="#" class="nav-link" data-view="groups">📁 Groups</a></li>
+        <li><a href="#" class="nav-link" data-view="reports">📈 Reports</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      <!-- ========== DASHBOARD VIEW ========== -->
+      <section id="view-dashboard" class="view active">
+        <div class="view-header">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📁</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-groups">0</span>
+              <span class="stat-label">Total Groups</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-users">0</span>
+              <span class="stat-label">Total Users</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💸</div>
+            <div class="stat-info">
+              <span class="stat-value" id="stat-expenses">0</span>
+              <span class="stat-label">Total Expenses</span>
+            </div>
+          </div>
+        </div>
+        <div class="section-card">
+          <h2>Recent Activity</h2>
+          <ul id="recent-activity" class="activity-list">
+            <li class="empty-state">No recent activity yet.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ========== USERS VIEW ========== -->
+      <section id="view-users" class="view">
+        <div class="view-header">
+          <h1>Users</h1>
+          <button class="btn btn-primary" id="btn-create-user">+ Create User</button>
+        </div>
+        <div class="cards-grid" id="users-list">
+          <div class="empty-state">No users yet. Create one to get started!</div>
+        </div>
+      </section>
+
+      <!-- ========== GROUPS VIEW ========== -->
+      <section id="view-groups" class="view">
+        <!-- Groups List -->
+        <div id="groups-list-view">
+          <div class="view-header">
+            <h1>Groups</h1>
+            <button class="btn btn-primary" id="btn-create-group">+ Create Group</button>
+          </div>
+          <div class="cards-grid" id="groups-list">
+            <div class="empty-state">No groups yet. Create one to get started!</div>
+          </div>
+        </div>
+
+        <!-- Group Detail -->
+        <div id="group-detail-view" class="hidden">
+          <div class="view-header">
+            <button class="btn btn-secondary" id="btn-back-groups">← Back</button>
+            <h1 id="group-detail-name">Group Name</h1>
+            <div class="header-actions">
+              <button class="btn btn-primary" id="btn-add-expense">+ Add Expense</button>
+              <button class="btn btn-danger" id="btn-delete-group">🗑 Delete</button>
+            </div>
+          </div>
+
+          <!-- Members Section -->
+          <div class="section-card">
+            <div class="section-header">
+              <h2>Members</h2>
+              <button class="btn btn-small btn-primary" id="btn-add-member">+ Add Member</button>
+            </div>
+            <div class="members-chips" id="group-members"></div>
+          </div>
+
+          <!-- Expenses Section -->
+          <div class="section-card">
+            <h2>Expenses</h2>
+            <div class="table-wrapper">
+              <table class="data-table" id="expenses-table">
+                <thead>
+                  <tr>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Paid By</th>
+                    <th>Split Type</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="expenses-tbody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state hidden" id="no-expenses">No expenses recorded yet.</div>
+          </div>
+
+          <!-- Settlements Section -->
+          <div class="section-card">
+            <h2>Settlements</h2>
+            <div class="table-wrapper">
+              <table class="data-table" id="settlements-table">
+                <thead>
+                  <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody id="settlements-tbody"></tbody>
+              </table>
+            </div>
+            <div class="empty-state hidden" id="no-settlements">All settled up! 🎉</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== REPORTS VIEW ========== -->
+      <section id="view-reports" class="view">
+        <div class="view-header">
+          <h1>Reports</h1>
+        </div>
+        <div class="section-card">
+          <h2>Settlement Report</h2>
+          <div class="form-group">
+            <label for="report-group-select">Select Group</label>
+            <select id="report-group-select" class="form-input">
+              <option value="">-- Select a group --</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btn-generate-report">Generate Report</button>
+          <div id="report-output" class="report-output hidden">
+            <pre id="report-text"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ========== MODALS ========== -->
+
+  <!-- Create User Modal -->
+  <div class="modal-overlay" id="modal-create-user">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Create User</h2>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <form id="form-create-user">
+        <div class="form-group">
+          <label for="user-name">Name</label>
+          <input type="text" id="user-name" class="form-input" placeholder="Enter name" required>
+        </div>
+        <div class="form-group">
+          <label for="user-email">Email</label>
+          <input type="email" id="user-email" class="form-input" placeholder="Enter email" required>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create Group Modal -->
+  <div class="modal-overlay" id="modal-create-group">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Create Group</h2>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <form id="form-create-group">
+        <div class="form-group">
+          <label for="group-name">Group Name</label>
+          <input type="text" id="group-name" class="form-input" placeholder="Enter group name" required>
+        </div>
+        <div class="form-group">
+          <label>Select Members</label>
+          <div id="group-member-checkboxes" class="checkbox-grid"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Expense Modal -->
+  <div class="modal-overlay" id="modal-add-expense">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Add Expense</h2>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <form id="form-add-expense">
+        <div class="form-group">
+          <label for="expense-description">Description</label>
+          <input type="text" id="expense-description" class="form-input" placeholder="What was this expense for?" required>
+        </div>
+        <div class="form-group">
+          <label for="expense-amount">Amount ($)</label>
+          <input type="number" id="expense-amount" class="form-input" placeholder="0.00" step="0.01" min="0.01" required>
+        </div>
+        <div class="form-group">
+          <label for="expense-paidby">Paid By</label>
+          <select id="expense-paidby" class="form-input" required>
+            <option value="">-- Select who paid --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="expense-splittype">Split Type</label>
+          <select id="expense-splittype" class="form-input" required>
+            <option value="EQUAL">Equal Split</option>
+            <option value="PERCENTAGE">Percentage Split</option>
+          </select>
+        </div>
+        <div id="percentage-inputs" class="hidden">
+          <label>Percentages (must sum to 100)</label>
+          <div id="percentage-fields"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Expense</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Member Modal -->
+  <div class="modal-overlay" id="modal-add-member">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Add Member to Group</h2>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <form id="form-add-member">
+        <div class="form-group">
+          <label for="member-select">Select User</label>
+          <select id="member-select" class="form-input" required>
+            <option value="">-- Select a user --</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add Member</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
