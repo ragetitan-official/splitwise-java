@@ -168,7 +168,7 @@ async function loadDashboard() {
         totalExpCount += g.expenses.length;
         g.expenses.forEach(exp => {
           activities.push({
-            desc: `"${exp.description}" ($${Number(exp.amount).toFixed(2)}) in ${g.name}`,
+            desc: `"${exp.description}" (₹${Number(exp.amount).toFixed(2)}) in ${g.name}`,
             time: exp.createdAt || ''
           });
         });
@@ -403,7 +403,7 @@ async function renderGroupDetail() {
       const paidByName = exp.paidBy ? exp.paidBy.name : 'Unknown';
       tr.innerHTML = `
         <td><strong>${escapeHtml(exp.description)}</strong></td>
-        <td>$${Number(exp.amount).toFixed(2)}</td>
+        <td>₹${Number(exp.amount).toFixed(2)}</td>
         <td>${escapeHtml(paidByName)}</td>
         <td><span class="badge">${exp.splitType}</span></td>
         <td>${exp.createdAt || 'N/A'}</td>
@@ -425,11 +425,13 @@ async function loadSettlements(groupId) {
     if (settlements && settlements.length > 0) {
       noSettlements.classList.add('hidden');
       settlements.forEach(s => {
+        const fromName = (s.fromUser && s.fromUser.name) || (s.from && s.from.name) || s.from || 'User';
+        const toName = (s.toUser && s.toUser.name) || (s.to && s.to.name) || s.to || 'User';
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td class="text-danger"><strong>${escapeHtml(s.fromUser ? s.fromUser.name : 'User')}</strong></td>
-          <td class="text-success"><strong>${escapeHtml(s.toUser ? s.toUser.name : 'User')}</strong></td>
-          <td><span class="settlement-amount">$${Number(s.amount).toFixed(2)}</span></td>
+          <td class="text-danger"><strong>${escapeHtml(fromName)}</strong></td>
+          <td class="text-success"><strong>${escapeHtml(toName)}</strong></td>
+          <td><span class="settlement-amount">₹${Number(s.amount).toFixed(2)}</span></td>
         `;
         settlementsTbody.appendChild(tr);
       });

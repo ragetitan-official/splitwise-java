@@ -33,7 +33,7 @@ public class SettlementReport implements Reportable {
             sb.append("Settlements (").append(settlements.size()).append(" transaction(s)):\n");
             for (int i = 0; i < settlements.size(); i++) {
                 Settlement s = settlements.get(i);
-                sb.append(String.format("  %d. %s pays %s: $%.2f%n",
+                sb.append(String.format("  %d. %s pays %s: ₹%.2f%n",
                         i + 1,
                         s.getFromUser().getName(),
                         s.getToUser().getName(),

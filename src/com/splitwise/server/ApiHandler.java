@@ -653,10 +653,14 @@ public class ApiHandler implements HttpHandler {
     }
 
     private String settlementToJson(Settlement settlement) {
+        User from = settlement.getFromUser();
+        User to = settlement.getToUser();
         return "{" +
-                "\"from\":" + userToJson(settlement.getFromUser()) + "," +
-                "\"to\":" + userToJson(settlement.getToUser()) + "," +
-                "\"amount\":" + String.format("%.2f", settlement.getAmount()) +
+                "\"from\":" + userToJson(from) + "," +
+                "\"to\":" + userToJson(to) + "," +
+                "\"fromUser\":" + userToJson(from) + "," +
+                "\"toUser\":" + userToJson(to) + "," +
+                "\"amount\":" + String.format(java.util.Locale.US, "%.2f", settlement.getAmount()) +
                 "}";
     }
 
