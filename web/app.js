@@ -268,7 +268,11 @@ formCreateUser.addEventListener('submit', async (e) => {
     });
     showToast(`User "${name}" created!`, 'success');
     closeModal(modalCreateUser);
-    loadUsers();
+    if (currentUserView === 'users') {
+      loadUsers();
+    } else if (currentUserView === 'dashboard') {
+      loadDashboard();
+    }
   } catch (err) {
     console.error(err);
   }
@@ -345,7 +349,11 @@ formCreateGroup.addEventListener('submit', async (e) => {
     });
     showToast(`Group "${name}" created!`, 'success');
     closeModal(modalCreateGroup);
-    loadGroups();
+    if (currentUserView === 'groups') {
+      loadGroups();
+    } else if (currentUserView === 'dashboard') {
+      loadDashboard();
+    }
   } catch (err) {
     console.error(err);
   }
