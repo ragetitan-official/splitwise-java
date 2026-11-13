@@ -112,15 +112,20 @@ if (hamburgerBtn) {
 // Modal handling
 document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.modal-overlay').forEach(modal => modal.classList.remove('active'));
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.classList.remove('show');
+      modal.classList.remove('active');
+    });
   });
 });
 
 function openModal(modal) {
+  modal.classList.add('show');
   modal.classList.add('active');
 }
 
 function closeModal(modal) {
+  modal.classList.remove('show');
   modal.classList.remove('active');
 }
 
@@ -211,10 +216,46 @@ async function loadUsers() {
   }
 }
 
-btnCreateUser.addEventListener('click', () => {
-  formCreateUser.reset();
-  openModal(modalCreateUser);
-});
+if (btnCreateUser) {
+  btnCreateUser.addEventListener('click', () => {
+    formCreateUser.reset();
+    openModal(modalCreateUser);
+  });
+}
+const dashBtnCreateGroup = document.getElementById('dash-btn-create-group');
+
+if (dashBtnCreateUser) {
+  dashBtnCreateUser.addEventListener('click', () => {
+    formCreateUser.reset();
+    openModal(modalCreateUser);
+  });
+}
+
+if (dashBtnCreateGroup) {
+  dashBtnCreateGroup.addEventListener('click', async () => {
+    formCreateGroup.reset();
+    try {
+      users = await apiRequest('/users');
+    } catch (e) {
+      users = [];
+    }
+    groupMemberCheckboxes.innerHTML = '';
+    if (!users || users.length === 0) {
+      groupMemberCheckboxes.innerHTML = '<p class="text-muted">No users found. Create users first.</p>';
+    } else {
+      users.forEach(u => {
+        const label = document.createElement('label');
+        label.className = 'checkbox-label';
+        label.innerHTML = `
+          <input type="checkbox" value="${u.id}">
+          <span>${escapeHtml(u.name)} (${escapeHtml(u.email)})</span>
+        `;
+        groupMemberCheckboxes.appendChild(label);
+      });
+    }
+    openModal(modalCreateGroup);
+  });
+}
 
 formCreateUser.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -264,25 +305,31 @@ async function loadGroups() {
   }
 }
 
-btnCreateGroup.addEventListener('click', async () => {
-  formCreateGroup.reset();
-  users = await apiRequest('/users');
-  groupMemberCheckboxes.innerHTML = '';
-  if (users.length === 0) {
-    groupMemberCheckboxes.innerHTML = '<p class="text-muted">No users found. Create users first.</p>';
-  } else {
-    users.forEach(u => {
-      const label = document.createElement('label');
-      label.className = 'checkbox-label';
-      label.innerHTML = `
-        <input type="checkbox" value="${u.id}">
-        <span>${escapeHtml(u.name)} (${escapeHtml(u.email)})</span>
-      `;
-      groupMemberCheckboxes.appendChild(label);
-    });
-  }
-  openModal(modalCreateGroup);
-});
+if (btnCreateGroup) {
+  btnCreateGroup.addEventListener('click', async () => {
+    formCreateGroup.reset();
+    try {
+      users = await apiRequest('/users');
+    } catch (e) {
+      users = [];
+    }
+    groupMemberCheckboxes.innerHTML = '';
+    if (!users || users.length === 0) {
+      groupMemberCheckboxes.innerHTML = '<p class="text-muted">No users found. Create users first.</p>';
+    } else {
+      users.forEach(u => {
+        const label = document.createElement('label');
+        label.className = 'checkbox-label';
+        label.innerHTML = `
+          <input type="checkbox" value="${u.id}">
+          <span>${escapeHtml(u.name)} (${escapeHtml(u.email)})</span>
+        `;
+        groupMemberCheckboxes.appendChild(label);
+      });
+    }
+    openModal(modalCreateGroup);
+  });
+}
 
 formCreateGroup.addEventListener('submit', async (e) => {
   e.preventDefault();

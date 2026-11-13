@@ -553,7 +553,8 @@ body {
   animation: fadeIn 0.2s ease;
 }
 
-.modal-overlay.show {
+.modal-overlay.show,
+.modal-overlay.active {
   display: flex;
 }
 
