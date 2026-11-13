@@ -222,6 +222,8 @@ if (btnCreateUser) {
     openModal(modalCreateUser);
   });
 }
+
+const dashBtnCreateUser = document.getElementById('dash-btn-create-user');
 const dashBtnCreateGroup = document.getElementById('dash-btn-create-group');
 
 if (dashBtnCreateUser) {
