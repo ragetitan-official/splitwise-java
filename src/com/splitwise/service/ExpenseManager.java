@@ -41,21 +41,9 @@ public class ExpenseManager {
     /**
      * Creates and registers a new user with auto-generated UUID.
      */
-    public User createUser(String name, String email) {
+    public User createUser(String name) {
         String id = UUID.randomUUID().toString();
-        User user = new User(id, name, email);
-        users.put(id, user);
-        return user;
-    }
-
-    /**
-     * Creates and registers a new user with specific ID.
-     */
-    public User createUser(String id, String name, String email) {
-        if (users.containsKey(id)) {
-            throw new IllegalArgumentException("User with id '" + id + "' already exists");
-        }
-        User user = new User(id, name, email);
+        User user = new User(id, name);
         users.put(id, user);
         return user;
     }

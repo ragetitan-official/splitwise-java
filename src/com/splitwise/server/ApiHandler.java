@@ -81,18 +81,13 @@ public class ApiHandler implements HttpHandler {
             String body = readRequestBody(exchange);
             Map<String, String> json = parseJsonObject(body);
             String name = json.get("name");
-            String email = json.get("email");
 
             if (name == null || name.isEmpty()) {
                 sendJsonError(exchange, 400, "Name is required");
                 return;
             }
-            if (email == null || email.isEmpty()) {
-                sendJsonError(exchange, 400, "Email is required");
-                return;
-            }
 
-            User user = manager.createUser(name, email);
+            User user = manager.createUser(name);
             sendJsonResponse(exchange, 201, userToJson(user));
         } else if ("GET".equals(method)) {
             List<User> users = manager.getAllUsers();
@@ -584,8 +579,7 @@ public class ApiHandler implements HttpHandler {
     private String userToJson(User user) {
         return "{" +
                 "\"id\":" + escapeJsonString(user.getId()) + "," +
-                "\"name\":" + escapeJsonString(user.getName()) + "," +
-                "\"email\":" + escapeJsonString(user.getEmail()) +
+                "\"name\":" + escapeJsonString(user.getName()) +
                 "}";
     }
 

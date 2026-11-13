@@ -207,7 +207,6 @@ async function loadUsers() {
       card.innerHTML = `
         <div class="card-avatar">👤</div>
         <div class="card-title">${escapeHtml(u.name)}</div>
-        <div class="card-subtitle">${escapeHtml(u.email)}</div>
       `;
       usersList.appendChild(card);
     });
@@ -250,7 +249,7 @@ if (dashBtnCreateGroup) {
         label.className = 'checkbox-label';
         label.innerHTML = `
           <input type="checkbox" value="${u.id}">
-          <span>${escapeHtml(u.name)} (${escapeHtml(u.email)})</span>
+          <span>${escapeHtml(u.name)}</span>
         `;
         groupMemberCheckboxes.appendChild(label);
       });
@@ -262,11 +261,10 @@ if (dashBtnCreateGroup) {
 formCreateUser.addEventListener('submit', async (e) => {
   e.preventDefault();
   const name = document.getElementById('user-name').value.trim();
-  const email = document.getElementById('user-email').value.trim();
   try {
     await apiRequest('/users', {
       method: 'POST',
-      body: JSON.stringify({ name, email })
+      body: JSON.stringify({ name })
     });
     showToast(`User "${name}" created!`, 'success');
     closeModal(modalCreateUser);
@@ -328,7 +326,7 @@ if (btnCreateGroup) {
         label.className = 'checkbox-label';
         label.innerHTML = `
           <input type="checkbox" value="${u.id}">
-          <span>${escapeHtml(u.name)} (${escapeHtml(u.email)})</span>
+          <span>${escapeHtml(u.name)}</span>
         `;
         groupMemberCheckboxes.appendChild(label);
       });
@@ -471,7 +469,7 @@ btnAddMember.addEventListener('click', async () => {
     availableUsers.forEach(u => {
       const opt = document.createElement('option');
       opt.value = u.id;
-      opt.innerText = `${u.name} (${u.email})`;
+      opt.innerText = u.name;
       memberSelect.appendChild(opt);
     });
   }
